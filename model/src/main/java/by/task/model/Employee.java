@@ -1,4 +1,4 @@
-package by.task;
+package by.task.model;
 
 import java.time.LocalDate;
 
@@ -6,15 +6,15 @@ import java.time.LocalDate;
  * Created by Kolbik Viktor on 7.2.17.
  */
 public class Employee {
-    private int employeeId;
+    private long employeeId;
     private String fullName;
     private LocalDate birthDate;
     private long salary;
-    private int departmentId;
+    private long departmentId;
 
     public Employee(){}
 
-    public Employee(int employeeId, String fullName, LocalDate birthDate, long salary, int departmentId) {
+    public Employee(long employeeId, String fullName, LocalDate birthDate, long salary, long departmentId) {
         this.employeeId = employeeId;
         this.fullName = fullName;
         this.birthDate = birthDate;
@@ -22,11 +22,11 @@ public class Employee {
         this.departmentId = departmentId;
     }
 
-    public int getEmployeeId() {
+    public long getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(int employeeId) {
+    public void setEmployeeId(long employeeId) {
         this.employeeId = employeeId;
     }
 
@@ -54,11 +54,11 @@ public class Employee {
         this.salary = salary;
     }
 
-    public int getDepartmentId() {
+    public long getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(int departmentId) {
+    public void setDepartmentId(long departmentId) {
         this.departmentId = departmentId;
     }
 
@@ -78,11 +78,11 @@ public class Employee {
 
     @Override
     public int hashCode() {
-        int result = employeeId;
+        int result = (int)employeeId;
         result = 31 * result + fullName.hashCode();
         result = 31 * result + birthDate.hashCode();
-        result = 31 * result + (int) (salary ^ (salary >>> 32));
-        result = 31 * result + departmentId;
+        result = 31 * result + (int)(salary ^ (salary >>> 32));
+        result = 31 * result + (int)departmentId;
         return result;
     }
 

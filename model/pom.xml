@@ -5,7 +5,7 @@
     <parent>
         <artifactId>department</artifactId>
         <groupId>by.task</groupId>
-        <version>0.1-SNAPHOST</version>
+        <version>0.2-SNAPHOST</version>
     </parent>
 
     <packaging>jar</packaging>
@@ -17,32 +17,4 @@
         <project.built.sourceEncoding>UTF-8</project.built.sourceEncoding>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.hamcrest</groupId>
-                    <artifactId>hamcrest</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>2.3.2</version>
-                    <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
 </project>

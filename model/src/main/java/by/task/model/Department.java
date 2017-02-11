@@ -1,24 +1,28 @@
-package by.task;
+package by.task.model;
 
 /**
  * Created by Kolbik Viktor on 7.2.17.
  */
 public class Department {
-    private int departmentId;
+    private long departmentId;
     private String departmentName;
 
     public Department(){}
 
-    public Department(int departmentId, String departmentName) {
+    public Department(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public Department(long departmentId, String departmentName) {
         this.departmentId = departmentId;
         this.departmentName = departmentName;
     }
 
-    public int getDepartmentId() {
+    public long getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(int departmentId) {
+    public void setDepartmentId(long departmentId) {
         this.departmentId = departmentId;
     }
 
@@ -43,7 +47,7 @@ public class Department {
 
     @Override
     public int hashCode() {
-        int result = departmentId;
+        int result = (int)departmentId;
         result = 31 * result + departmentName.hashCode();
         return result;
     }
