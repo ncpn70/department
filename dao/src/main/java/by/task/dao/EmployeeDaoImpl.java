@@ -12,6 +12,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -53,6 +54,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
     private static String FULL_NAME = "fullName";
     private static String BIRTH_DATE = "birthDate";
     private static String DEPARTMENT_ID = "departmentId";
+    private static String SALARY = "salary";
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -75,10 +77,13 @@ public class EmployeeDaoImpl implements EmployeeDao {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue(EMPLOYEE_ID, employee.getEmployeeId())
                 .addValue(FULL_NAME, employee.getFullName())
-                .addValue(BIRTH_DATE, employee.getBirthDate())
+                .addValue(BIRTH_DATE, Date.valueOf(employee.getBirthDate()))
+                .addValue(SALARY, employee.getSalary())
                 .addValue(DEPARTMENT_ID, employee.getDepartmentId());
 
-        long id = namedParameterJdbcTemplate.update(insertEmployeeSql, sqlParameterSource, keyHolder);
+        namedParameterJdbcTemplate.update(insertEmployeeSql, sqlParameterSource, keyHolder);
+
+        long id = (Long) keyHolder.getKey();
 
         LOGGER.debug("NEW EMPLOYEE ID -> " + employee);
 
@@ -96,7 +101,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue(EMPLOYEE_ID, employee.getEmployeeId())
                 .addValue(FULL_NAME, employee.getFullName())
-                .addValue(BIRTH_DATE, employee.getBirthDate())
+                .addValue(BIRTH_DATE, Date.valueOf(employee.getBirthDate()))
+                .addValue(SALARY, employee.getSalary())
                 .addValue(DEPARTMENT_ID, employee.getDepartmentId());
 
         namedParameterJdbcTemplate.update(updateEmployeeSql, sqlParameterSource);
@@ -166,7 +172,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
         LOGGER.debug("SELECT BY -> " + date);
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue(BIRTH_DATE, date);
+                .addValue(BIRTH_DATE, Date.valueOf(date));
 
         return namedParameterJdbcTemplate.query(selectEmployeeByBirthDateSql, sqlParameterSource, new EmployeeMapper());
     }
@@ -182,8 +188,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
         LOGGER.debug("SELECT BY -> " + from + " - " + to);
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue(BIRTH_DATE + 1, from)
-                .addValue(BIRTH_DATE + 2, to);
+                .addValue(BIRTH_DATE + 1, Date.valueOf(from))
+                .addValue(BIRTH_DATE + 2, Date.valueOf(to));
 
         return  namedParameterJdbcTemplate.query(selectEmployeeByBirthDateDiapasonSql, sqlParameterSource, new EmployeeMapper());
     }
