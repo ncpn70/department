@@ -1,41 +1,35 @@
-package by.task.dao;
+package by.task.service_server;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import by.task.dao.DepartmentDao;
+import by.task.model.Department;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import by.task.model.Department;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
- * Created by simpson on 9.2.17.
+ * Created by simpson on 12.2.17.
  */
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/spring-dao-test.xml"})
+@ContextConfiguration(locations = {"classpath:/spring-service-test.xml"})
 @TransactionConfiguration(transactionManager="transactionManager", defaultRollback=true)
-public class DepartmentDaoTest {
+public class DepartmentServiceImplTest {
 
     @Autowired
     private DepartmentDao departmentDao;
 
-    private static Logger LOGGER = LogManager.getLogger(DepartmentDaoTest.class);
-
     @Test
-    public void testAdd(){
+    public void add() throws Exception {
         Department department1 = new Department(0, "INSERT_TEST");
 
         assertEquals(4, departmentDao.add(department1));
@@ -46,7 +40,7 @@ public class DepartmentDaoTest {
     }
 
     @Test
-    public void testUpdate(){
+    public void update() throws Exception {
         Department department = departmentDao.getById(0);
         department.setDepartmentName("UPDATED NAME");
         departmentDao.update(department);
@@ -56,7 +50,7 @@ public class DepartmentDaoTest {
     }
 
     @Test
-    public void testDelete(){
+    public void remove() throws Exception {
         long idToRemove = 1;
 
         departmentDao.remove(idToRemove);
@@ -69,12 +63,13 @@ public class DepartmentDaoTest {
     }
 
     @Test
-    public void testGetAll(){
+    public void getAll() throws Exception {
         assertEquals(departmentDao.getAll().size(), 4);
+
     }
 
     @Test
-    public void testGetById(){
+    public void getById() throws Exception {
         assertEquals(departmentDao.getById(1).getDepartmentName(), "Department 2");
     }
 

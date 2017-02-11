@@ -15,12 +15,10 @@ import org.springframework.jdbc.support.KeyHolder;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-
 /**
- * Created by simpson on 7.2.17.
+ *  Gives acces to DB
  */
 public class DepartmentDaoImpl implements DepartmentDao {
 
@@ -50,6 +48,11 @@ public class DepartmentDaoImpl implements DepartmentDao {
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
+    /**
+     *
+     * @param department - object that need to  add. id generates automatically.
+     * @return - id of new object
+     */
     @Override
     public long add(Department department) {
         LOGGER.debug("INSERT ->" + department);
@@ -67,6 +70,10 @@ public class DepartmentDaoImpl implements DepartmentDao {
         return id;
     }
 
+    /**
+     *
+     *  * @param department - object that stores necessaries data for updating.
+     */
     @Override
     public void update(Department department) {
         LOGGER.debug("UPDATE ->" + department);
@@ -78,6 +85,10 @@ public class DepartmentDaoImpl implements DepartmentDao {
         namedParameterJdbcTemplate.update(updateDepartmentSql, parameters);
     }
 
+    /**
+     *
+     * @param id - number of object that should be removed.
+     */
     @Override
     public void remove(long id) {
         LOGGER.debug("REMOVE ->" + id);
@@ -85,15 +96,24 @@ public class DepartmentDaoImpl implements DepartmentDao {
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue(DEPARTMENT_ID, id);
 
-        namedParameterJdbcTemplate.update(updateDepartmentSql, parameterSource);
+        namedParameterJdbcTemplate.update(deleteDepartmentSql, parameterSource);
     }
 
+    /**
+     *
+     * @return - list of all departments
+     */
     @Override
     public List<Department> getAll() {
 
         return namedParameterJdbcTemplate.query(selectAllDepartmentsSql, new DepartmentMapper());
     }
 
+    /**
+     *
+     * @param departmentId - number of department that should be selected
+     * @return - department by id
+     */
     @Override
     public Department getById(long departmentId) {
         LOGGER.debug("SELECT -> " + departmentId);
