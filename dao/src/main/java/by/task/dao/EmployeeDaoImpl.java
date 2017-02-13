@@ -3,6 +3,7 @@ package by.task.dao;
 import by.task.model.Employee;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -10,7 +11,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -21,6 +24,7 @@ import java.util.List;
 /**
  * Created by simpson on 7.2.17.
  */
+@Repository
 public class EmployeeDaoImpl implements EmployeeDao {
 
     @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${insert-employee-path}')).inputStream)}")
@@ -31,6 +35,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${delete-employee-path}')).inputStream)}")
     public String deleteEmployeeSql;
+
+    @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${delete-employee-by-department-id-path}')).inputStream)}")
+    public String deleteEmployeeByDepartmentIdSql;
 
     @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${select-employee-all-path}')).inputStream)}")
     public String selectAllEmployeesSql;
@@ -60,13 +67,17 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     private static Logger LOGGER = LogManager.getLogger(DepartmentDaoImpl.class);
 
-    public void setDataSource(DataSource dataSource) {
+    @Autowired
+    private DataSource dataSource;
+
+    @PostConstruct
+    public void setDataSource() {
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     /**
      *
-     * @param employee - object to add. Id generates automatically
+     * @param employee object to add. Id generates automatically
      * @return
      */
     @Override
@@ -77,7 +88,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue(EMPLOYEE_ID, employee.getEmployeeId())
                 .addValue(FULL_NAME, employee.getFullName())
-                .addValue(BIRTH_DATE, Date.valueOf(employee.getBirthDate()))
+                .addValue(BIRTH_DATE, employee.getBirthDate())
                 .addValue(SALARY, employee.getSalary())
                 .addValue(DEPARTMENT_ID, employee.getDepartmentId());
 
@@ -92,7 +103,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     /**
      *
-     * @param employee - object for updating
+     * @param employee object for updating
      */
     @Override
     public void update(Employee employee) {
@@ -101,7 +112,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue(EMPLOYEE_ID, employee.getEmployeeId())
                 .addValue(FULL_NAME, employee.getFullName())
-                .addValue(BIRTH_DATE, Date.valueOf(employee.getBirthDate()))
+                .addValue(BIRTH_DATE, employee.getBirthDate())
                 .addValue(SALARY, employee.getSalary())
                 .addValue(DEPARTMENT_ID, employee.getDepartmentId());
 
@@ -110,7 +121,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     /**
      *
-     * @param employeeId - number of object that should be removed
+     * @param employeeId number of object that should be removed
      */
     @Override
     public void remove(long employeeId) {
@@ -122,9 +133,19 @@ public class EmployeeDaoImpl implements EmployeeDao {
         namedParameterJdbcTemplate.update(deleteEmployeeSql, sqlParameterSource);
     }
 
+    @Override
+    public void removeByDepartmentId(long departmentId) {
+        LOGGER.debug("REMOVE ->" + departmentId);
+
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+                .addValue(DEPARTMENT_ID, departmentId);
+
+        namedParameterJdbcTemplate.update(deleteEmployeeByDepartmentIdSql, sqlParameterSource);
+    }
+
     /**
      *
-     * @return - list of all employees
+     * @return list of all employees
      */
     @Override
     public List<Employee> getAll() {
@@ -133,8 +154,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     /**
      *
-     * @param employeeId - number of needed employee
-     * @return - employee by id
+     * @param employeeId number of needed employee
+     * @return employee by id
      */
     @Override
     public Employee getById(long employeeId) {
@@ -148,8 +169,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     /**
      *
-     * @param fullName - name of needed employee
-     * @return - list of employees by name
+     * @param fullName name of needed employee
+     * @return list of employees by name
      */
     @Override
     public List<Employee> getByFullName(String fullName) {
@@ -164,15 +185,15 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     /**
      *
-     * @param date - birthDate of employee for selection
-     * @return - list of employees by birthDate
+     * @param date birthDate of employee for selection
+     * @return list of employees by birthDate
      */
     @Override
-    public List<Employee> getByBirthDate(LocalDate date) {
+    public List<Employee> getByBirthDate(java.sql.Date date) {
         LOGGER.debug("SELECT BY -> " + date);
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue(BIRTH_DATE, Date.valueOf(date));
+                .addValue(BIRTH_DATE, date);
 
         return namedParameterJdbcTemplate.query(selectEmployeeByBirthDateSql, sqlParameterSource, new EmployeeMapper());
     }
@@ -184,12 +205,12 @@ public class EmployeeDaoImpl implements EmployeeDao {
      * @return list of employees by birthDate diapason
      */
     @Override
-    public List<Employee> getByBirthDateDiapason(LocalDate from, LocalDate to) {
+    public List<Employee> getByBirthDateDiapason(java.sql.Date from, java.sql.Date to) {
         LOGGER.debug("SELECT BY -> " + from + " - " + to);
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue(BIRTH_DATE + 1, Date.valueOf(from))
-                .addValue(BIRTH_DATE + 2, Date.valueOf(to));
+                .addValue(BIRTH_DATE + 1, from)
+                .addValue(BIRTH_DATE + 2, to);
 
         return  namedParameterJdbcTemplate.query(selectEmployeeByBirthDateDiapasonSql, sqlParameterSource, new EmployeeMapper());
     }
@@ -217,7 +238,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
             employee.setEmployeeId(rs.getInt("employeeId"));
             employee.setFullName(rs.getString("fullName"));
-            employee.setBirthDate(rs.getDate("birthDate").toLocalDate());
+            employee.setBirthDate(rs.getDate("birthDate"));
             employee.setSalary(rs.getLong("salary"));
             employee.setDepartmentId(rs.getLong("departmentId"));
 

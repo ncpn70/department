@@ -1,4 +1,4 @@
-package by.task.dao;
+package by.task.service;
 
 import by.task.model.Employee;
 
@@ -6,10 +6,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Created by simpson on 7.2.17.
+ * Created by simpson on 12.2.17.
  */
-public interface EmployeeDao {
-
+public interface EmployeeService {
     /**
      *
      * @param employee object to add. Id generates automatically

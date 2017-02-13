@@ -4,6 +4,7 @@ import by.task.model.Department;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -11,7 +12,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,6 +23,7 @@ import java.util.List;
 /**
  *  Gives acces to DB
  */
+@Repository
 public class DepartmentDaoImpl implements DepartmentDao {
 
     @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${insert-department-path}')).inputStream)}")
@@ -44,14 +48,18 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public void setDataSource(DataSource dataSource) {
+    @Autowired
+    private DataSource dataSource;
+
+    @PostConstruct
+    public void setDataSource() {
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     /**
      *
-     * @param department - object that need to  add. id generates automatically.
-     * @return - id of new object
+     * @param department Department object that need to create ne department. id generates automatically.
+     * @return id of new object
      */
     @Override
     public long add(Department department) {
@@ -72,7 +80,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     /**
      *
-     *  * @param department - object that stores necessaries data for updating.
+     *  * @param department object that stores necessaries data for updating.
      */
     @Override
     public void update(Department department) {
@@ -87,7 +95,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     /**
      *
-     * @param id - number of object that should be removed.
+     * @param id number of object that should be removed.
      */
     @Override
     public void remove(long id) {
@@ -101,7 +109,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     /**
      *
-     * @return - list of all departments
+     * @return list of all departments
      */
     @Override
     public List<Department> getAll() {
@@ -111,8 +119,8 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     /**
      *
-     * @param departmentId - number of department that should be selected
-     * @return - department by id
+     * @param departmentId number of department that should be selected
+     * @return department by id
      */
     @Override
     public Department getById(long departmentId) {

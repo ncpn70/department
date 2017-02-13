@@ -8,13 +8,13 @@ import java.time.LocalDate;
 public class Employee {
     private long employeeId;
     private String fullName;
-    private LocalDate birthDate;
+    private java.sql.Date birthDate;
     private long salary;
     private long departmentId;
 
     public Employee(){}
 
-    public Employee(long employeeId, String fullName, LocalDate birthDate, long salary, long departmentId) {
+    public Employee(long employeeId, String fullName, java.sql.Date birthDate, long salary, long departmentId) {
         this.employeeId = employeeId;
         this.fullName = fullName;
         this.birthDate = birthDate;
@@ -38,11 +38,11 @@ public class Employee {
         this.fullName = fullName;
     }
 
-    public LocalDate getBirthDate() {
+    public java.sql.Date getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
+    public void setBirthDate(java.sql.Date birthDate) {
         this.birthDate = birthDate;
     }
 

@@ -1,13 +1,13 @@
-package by.task.dao;
+package by.task.service;
 
 import by.task.model.Department;
 
 import java.util.List;
 
 /**
- * Created by simpson on 7.2.17.
+ * Created by simpson on 12.2.17.
  */
-public interface DepartmentDao {
+public interface DepartmentService {
     /**
      *
      * @param department Department object that need to create ne department. id generates automatically.
@@ -23,20 +23,20 @@ public interface DepartmentDao {
 
     /**
      *
-     * @param departmentId - number of object that should be removed.
+     * @param departmentId number of object that should be removed.
      */
     void remove(long departmentId);
 
     /**
      *
-     * @return - list of all departments
+     * @return list of all departments
      */
     List<Department> getAll();
 
     /**
      *
      * @param departmentId - number of department that should be selected
-     * @return - department by id
+     * @return department by id
      */
     Department getById(long departmentId);
 }
