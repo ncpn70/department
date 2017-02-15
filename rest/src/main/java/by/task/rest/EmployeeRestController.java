@@ -41,10 +41,8 @@ public class EmployeeRestController {
 
         try{
             id = employeeService.add(employee);
-            LOGGER.debug(id + "!!!!!!!!!!!!!!!!!!!!!!!!!");
             return new ResponseEntity(id, HttpStatus.CREATED);
         } catch (Exception ex){
-            LOGGER.debug("!!!!!!!!!!!!!!!!!!!!!!!!!");
             return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -58,8 +56,10 @@ public class EmployeeRestController {
 
         try{
             employeeService.update(employee);
+            LOGGER.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + employee);
             return new ResponseEntity("ok", HttpStatus.ACCEPTED);
         } catch(Exception ex){
+            LOGGER.error(ex.getMessage() + ex.toString());
             return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -129,6 +129,4 @@ public class EmployeeRestController {
             return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
-
 }

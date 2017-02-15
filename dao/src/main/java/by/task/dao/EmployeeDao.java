@@ -2,6 +2,7 @@ package by.task.dao;
 
 import by.task.model.Employee;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -64,7 +65,7 @@ public interface EmployeeDao {
      * @param to top border of diapason
      * @return list of employees by birthDate diapason
      */
-    List<Employee> getByBirthDateDiapason(java.sql.Date from, java.sql.Date to);
+    List<Employee> getByBirthDateDiapason(Date from, Date to);
 
     /**
      *

@@ -13,6 +13,8 @@ import by.task.model.Department;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
@@ -36,7 +38,7 @@ public class DepartmentDaoTest {
 
     @Test
     public void testAdd(){
-        Department department1 = new Department(0, "INSERT_TEST");
+        Department department1 = new Department(0, "INSERT_TEST", 100);
 
         assertEquals(4, departmentDao.add(department1));
 
@@ -70,7 +72,9 @@ public class DepartmentDaoTest {
 
     @Test
     public void testGetAll(){
-        assertEquals(departmentDao.getAll().size(), 4);
+        List<Department> list = departmentDao.getAll();
+        assertEquals(list.size(), 4);
+        LOGGER.error("AVERAGE SALARY -> " + list.get(1).getAverageSalary());
     }
 
     @Test

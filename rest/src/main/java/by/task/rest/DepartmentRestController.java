@@ -2,15 +2,16 @@ package by.task.rest;
 
 import by.task.model.Department;
 import by.task.service.DepartmentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by simpson on 12.2.17.
@@ -19,9 +20,11 @@ import java.util.Set;
 @RequestMapping("/restDepartment")
 public class DepartmentRestController {
 
+    private static Logger LOGGER = LogManager.getLogger(DepartmentRestController.class);
+
+
     @Resource
     private DepartmentService departmentService;
-
     public void setDepartmentService(DepartmentService departmentService){
         this.departmentService = departmentService;
     }
@@ -65,9 +68,10 @@ public class DepartmentRestController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity getAll(){
+    public ResponseEntity<List> getAll(){
         List<Department> list = departmentService.getAll();
-        return new ResponseEntity(list, HttpStatus.OK);
+        LOGGER.error("AVERAGE SALARY IN REST IS -> " + list.get(1).getAverageSalary());
+        return new ResponseEntity<List>(list, HttpStatus.OK);
     }
 
     @ResponseBody

@@ -1,5 +1,6 @@
 package by.task.model;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 /**
@@ -8,7 +9,7 @@ import java.time.LocalDate;
 public class Employee {
     private long employeeId;
     private String fullName;
-    private java.sql.Date birthDate;
+    private Date birthDate;
     private long salary;
     private long departmentId;
 

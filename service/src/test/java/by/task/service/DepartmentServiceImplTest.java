@@ -30,7 +30,8 @@ public class DepartmentServiceImplTest {
 
     @Test
     public void add() throws Exception {
-        Department department1 = new Department(0, "INSERT_TEST");
+        Department department1 = new Department(0, "INSERT_TEST", 100);
+
 
         assertEquals(4, departmentDao.add(department1));
 

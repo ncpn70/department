@@ -137,8 +137,9 @@ public class DepartmentDaoImpl implements DepartmentDao {
         public Department mapRow(ResultSet rs, int i) throws SQLException {
             Department Department = new Department();
 
-            Department.setDepartmentId(rs.getInt("departmentId"));
+            Department.setDepartmentId(rs.getLong("departmentId"));
             Department.setDepartmentName(rs.getString("departmentName"));
+            Department.setAverageSalary(rs.getLong("averageSalary"));
             return Department;
         }
     }

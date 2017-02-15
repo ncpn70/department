@@ -189,7 +189,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
      * @return list of employees by birthDate
      */
     @Override
-    public List<Employee> getByBirthDate(java.sql.Date date) {
+    public List<Employee> getByBirthDate(Date date) {
         LOGGER.debug("SELECT BY -> " + date);
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
@@ -205,7 +205,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
      * @return list of employees by birthDate diapason
      */
     @Override
-    public List<Employee> getByBirthDateDiapason(java.sql.Date from, java.sql.Date to) {
+    public List<Employee> getByBirthDateDiapason(Date from, Date to) {
         LOGGER.debug("SELECT BY -> " + from + " - " + to);
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()

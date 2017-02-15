@@ -7,15 +7,19 @@ public class Department {
     private long departmentId;
     private String departmentName;
 
+    private long averageSalary = 0;
+
     public Department(){}
 
-    public Department(String departmentName) {
+    public Department(String departmentName, long averageSalary) {
         this.departmentName = departmentName;
+        this.averageSalary = averageSalary;
     }
 
-    public Department(long departmentId, String departmentName) {
+    public Department(long departmentId, String departmentName, long averageSalary) {
         this.departmentId = departmentId;
         this.departmentName = departmentName;
+        this.averageSalary = averageSalary;
     }
 
     public long getDepartmentId() {
@@ -32,6 +36,15 @@ public class Department {
 
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
+    }
+
+
+    public long getAverageSalary() {
+        return averageSalary;
+    }
+
+    public void setAverageSalary(long averageSalary) {
+        this.averageSalary = averageSalary;
     }
 
     @Override
@@ -57,6 +70,7 @@ public class Department {
         return "Department{" +
                 "departmentId=" + departmentId +
                 ", departmentName='" + departmentName + '\'' +
+                ", averageSalary=" + averageSalary +
                 '}';
     }
 }

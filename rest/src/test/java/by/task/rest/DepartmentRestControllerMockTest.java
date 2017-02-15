@@ -55,7 +55,7 @@ public class DepartmentRestControllerMockTest {
     public void testAdd() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
 
-        Department department = new Department(2, "REST TEST DEPARTMENT");
+        Department department = new Department(2, "REST TEST DEPARTMENT", 1);
         expect(departmentService.add(department)).andReturn(2L);
         replay(departmentService);
 
@@ -77,7 +77,7 @@ public class DepartmentRestControllerMockTest {
     @Test
     public void testUpdate() throws Exception{
         ObjectMapper objectMapper = new ObjectMapper();
-        Department department = new Department(2, "REST TEST DEPARTMENT");
+        Department department = new Department(2, "REST TEST DEPARTMENT", 1);
 
         departmentService.update(department);
         expectLastCall().once();
@@ -115,8 +115,8 @@ public class DepartmentRestControllerMockTest {
 
     @Test
     public void testGetById() throws Exception{
-        Department department = new Department(2, "REST TEST DEPARTMENT");
-        String expextedStr = "{\"departmentId\":2,\"departmentName\":\"REST TEST DEPARTMENT\"}";
+        Department department = new Department(2, "REST TEST DEPARTMENT", 1);
+        String expextedStr = "{\"departmentId\":2,\"departmentName\":\"REST TEST DEPARTMENT\",\"averageSalary\":1}";
         expect(departmentService.getById(3))
                 .andReturn(department);
         replay(departmentService);
@@ -133,8 +133,8 @@ public class DepartmentRestControllerMockTest {
     @Test
     public void testGetAllGalaxies() throws Exception{
         List<Department> departments = new ArrayList<>();
-        departments.add(new Department(2, "REST TEST DEPARTMENT"));
-        departments.add(new Department(3, "TESSSSST"));
+        departments.add(new Department(2, "REST TEST DEPARTMENT", 1));
+        departments.add(new Department(3, "TESSSSST", 1));
 
 
         expect(departmentService.getAll()).andReturn(departments);
@@ -146,7 +146,7 @@ public class DepartmentRestControllerMockTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content()
-                        .string("[{\"departmentId\":2,\"departmentName\":\"REST TEST DEPARTMENT\"},{\"departmentId\":3,\"departmentName\":\"TESSSSST\"}]"));
+                        .string("[{\"departmentId\":2,\"departmentName\":\"REST TEST DEPARTMENT\",\"averageSalary\":1},{\"departmentId\":3,\"departmentName\":\"TESSSSST\",\"averageSalary\":1}]"));
 
         verify(departmentService);
     }
