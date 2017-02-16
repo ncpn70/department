@@ -4,6 +4,7 @@ import by.task.model.Department;
 import by.task.model.Employee;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,7 +24,8 @@ public class EmployeeWebController {
     private static final Logger LOGGER = LogManager.getLogger(DepartmentWebController.class);
     private static String URL = "http://localhost:8080/rest/restEmployee/";
 
-    private RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    private RestTemplate restTemplate;
 
 
     @RequestMapping("/")

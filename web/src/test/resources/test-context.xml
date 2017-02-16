@@ -16,7 +16,9 @@
     <mvc:annotation-driven/>
     <context:component-scan base-package="by.task.web"/>
 
-    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>
+    <bean id="restTemplate" class="org.easymock.EasyMock" factory-method="createMock">
+        <constructor-arg value="org.springframework.web.client.RestTemplate"/>
+    </bean>
 
     <mvc:resources mapping="/resources/**" location="/resources/" />
 
