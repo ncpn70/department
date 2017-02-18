@@ -12,6 +12,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import java.sql.Date;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class EmployeeWebController {
     private static final Logger LOGGER = LogManager.getLogger(DepartmentWebController.class);
     private static String URL = "http://localhost:8080/rest/restEmployee/";
 
-    @Autowired
+    @Resource
     private RestTemplate restTemplate;
 
 
