@@ -14,7 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
+import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -22,16 +24,14 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:/spring-dao-test.xml"})
 @TransactionConfiguration(transactionManager="transactionManager", defaultRollback=true)
-@Ignore
 public class EmployeeDaoImplTest {
 
     @Autowired
     private EmployeeDao employeeDao;
 
-  /*  @Test
-    @Ignore
+    @Test
     public void testAdd(){
-        Employee employee1 = new Employee(0, "EMPLOYEE TEST", LocalDate.now(), 100, 2);
+        Employee employee1 = new Employee(0, "EMPLOYEE TEST", new Date(2015, 14, 12), 100, 2);
 
         assertEquals(5, employeeDao.add(employee1));
 
@@ -74,28 +74,14 @@ public class EmployeeDaoImplTest {
 
     @Test
     public void testGetById(){
-        Employee employee = new Employee(2, "Employee 3", LocalDate.parse("1994-01-15"), 35010, 3);
-        assertEquals(employeeDao.getById(2), employee);
-    }
-
-    @Test
-    public void testGetByBirthDate(){
-        LocalDate date = LocalDate.parse("1994-01-15");
-        Employee employee = new Employee(2, "Employee 3", date, 35010, 3);
-        assertEquals(employeeDao.getById(2), employeeDao.getByBirthDate(date).get(0));
-    }
-
-    @Test
-    public void getByBirthDateDiapason(){
-        LocalDate dateFrom = LocalDate.parse("1994-01-01");
-        LocalDate dateTo = LocalDate.parse("1995-01-01");
-
-        assertEquals(employeeDao.getByBirthDateDiapason(dateFrom, dateTo).size(), 4);
+        Employee employee = new Employee(2, "Employee 3",
+                new Date(94,00, 15), 35010, 3);
+        assertEquals(employeeDao.getById(2),employee);
     }
 
     @Test
     public void testGetByDepartmentId(){
         assertEquals(employeeDao.getByDepartmentId(4).size(), 2);
-    }*/
+    }
 
 }

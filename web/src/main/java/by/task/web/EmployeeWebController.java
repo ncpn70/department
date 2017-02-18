@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -48,10 +49,15 @@ public class EmployeeWebController {
         try{
             long i = restTemplate.postForObject(URL, employee, long.class);
             modelAndView = new ModelAndView("redirect:/employees/");
-        } catch(Exception ex){
+        } catch (HttpClientErrorException ex) {
+            LOGGER.error("HttpClientErrorException -->" + ex.getStatusCode());
+            modelAndView = new ModelAndView("employeePage", "employees", restTemplate.getForObject(URL, List.class));
+            modelAndView.addObject("error", "HttpClientErrorException occurred");
+        }catch(Exception ex){
+            LOGGER.error("Exception -->" + ex.getStackTrace());
             modelAndView = new ModelAndView("employeePage", "employees", restTemplate.getForObject(URL, List.class));
             modelAndView.addObject("creationError", true);
-            modelAndView.addObject("wrongParamenter", ex.toString());
+            modelAndView.addObject("error", ex.toString());
         }
 
         return modelAndView;
@@ -71,10 +77,15 @@ public class EmployeeWebController {
         try{
             restTemplate.put(URL, employee);
             modelAndView = new ModelAndView("redirect:/employees/");
-        } catch(Exception ex){
+        } catch (HttpClientErrorException ex) {
+            LOGGER.error("HttpClientErrorException -->" + ex.getStatusCode());
             modelAndView = new ModelAndView("employeePage", "employees", restTemplate.getForObject(URL, List.class));
-            modelAndView.addObject("updatingError", true);
-            modelAndView.addObject("wrongParamenter", ex.toString());
+            modelAndView.addObject("error", "HttpClientErrorException occurred");
+        }catch(Exception ex){
+            LOGGER.error("Exception -->" + ex.getStackTrace());
+            modelAndView = new ModelAndView("employeePage", "employees", restTemplate.getForObject(URL, List.class));
+            modelAndView.addObject("creationError", true);
+            modelAndView.addObject("error", ex.toString());
         }
 
         return modelAndView;
@@ -89,8 +100,15 @@ public class EmployeeWebController {
             employees = restTemplate.getForObject(URL + "/employeesByDepartmentId/" + departmentId, List.class);
             LOGGER.error("");
             modelAndView = new ModelAndView("employeePage", "employees", employees);
-        } catch(Exception ex){
+        } catch (HttpClientErrorException ex) {
+            LOGGER.error("HttpClientErrorException -->" + ex.getStatusCode());
             modelAndView = new ModelAndView("employeePage", "employees", restTemplate.getForObject(URL, List.class));
+            modelAndView.addObject("error", "HttpClientErrorException occurred");
+        }catch(Exception ex){
+            LOGGER.error("Exception -->" + ex.getStackTrace());
+            modelAndView = new ModelAndView("employeePage", "employees", restTemplate.getForObject(URL, List.class));
+            modelAndView.addObject("creationError", true);
+            modelAndView.addObject("error", ex.toString());
         }
 
         return modelAndView;
@@ -103,9 +121,15 @@ public class EmployeeWebController {
         try {
             restTemplate.delete(URL + depId, depId);
             modelAndView = new ModelAndView("redirect:/employees/");
-        } catch(Exception ex){
+        } catch (HttpClientErrorException ex) {
+            LOGGER.error("HttpClientErrorException -->" + ex.getStatusCode());
             modelAndView = new ModelAndView("employeePage", "employees", restTemplate.getForObject(URL, List.class));
-
+            modelAndView.addObject("error", "HttpClientErrorException occurred");
+        }catch(Exception ex){
+            LOGGER.error("Exception -->" + ex.getStackTrace());
+            modelAndView = new ModelAndView("employeePage", "employees", restTemplate.getForObject(URL, List.class));
+            modelAndView.addObject("creationError", true);
+            modelAndView.addObject("error", ex.toString());
         }
 
         return modelAndView;

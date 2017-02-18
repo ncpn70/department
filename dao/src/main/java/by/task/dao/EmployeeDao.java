@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Created by simpson on 7.2.17.
+ * DAO
  */
 public interface EmployeeDao {
 
@@ -44,28 +44,6 @@ public interface EmployeeDao {
      * @return employee by id
      */
     Employee getById(long employeeId);
-
-    /**
-     *
-     * @param fullName name of needed employee
-     * @return list of employees by name
-     */
-    List<Employee> getByFullName(String fullName);
-
-    /**
-     *
-     * @param date birthDate of employee for selection
-     * @return list of employees by birthDate
-     */
-    List<Employee> getByBirthDate(java.sql.Date date);
-
-    /**
-     *
-     * @param from low border of diapason
-     * @param to top border of diapason
-     * @return list of employees by birthDate diapason
-     */
-    List<Employee> getByBirthDateDiapason(Date from, Date to);
 
     /**
      *

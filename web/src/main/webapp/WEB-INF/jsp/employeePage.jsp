@@ -26,107 +26,80 @@
     <body>
         <div>
             <div>
-                <div style="width:50%;float:left">
+                <div style="width:60%;float:left; padding: 10px;">
                     <table class="table" id="mainTable" summary="list of Departments.">
-                        <tr>
-                            <td><h2>№</h2></td>
-                            <td><h2>Имя</h2></td>
-                            <td><h2>Дата рождения</h2></td>
-                            <td><h2>Зарплата</h2></td>
-                            <td><h2>Обновить</h2></td>
-                            <td><h2>Удалить</h2></td>
+                        <tr class="active">
+                            <td><h3>№</h3></td>
+                            <td><h3>Имя</h3></td>
+                            <td><h3>Дата рождения</h3></td>
+                            <td><h3>Зарплата</h3></td>
+                            <td><h3>Отдел</h3></td>
+                            <td><h3>Обновить</h3></td>
+                            <td><h3>Удалить</h3></td>
                         </tr>
                         <tbody>
 
                         </tbody>
                     </table>
                 </div>
-                <div style="with: 50%; float:left">
+                <div style="padding: 10px;" class="form-inline">
+                    <input type="date" id="from" class="form-control" name="from" value="2012-12-10" required="true"/>
+                    <input type="date" id="to" class="form-control" name="to" value="2012-12-10" required="true"/>
+                    <input class="btn btn-primary" type="button" id="findBtn" name="findBtn" value="Найти" onclick="filterByDate()"/>
+                </div>
+                <div style="padding: 10px;float:left; width: 20%">
                     <form action="<spring:url value='/employees/addEmployee'/>" method="post">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td><label for="name">Имя</label></td>
-                                    <td><input type="text" id="createName" name="fullName" value="" required="true" /></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="date">Дата Рождения</label></td>
-                                    <td><input type="date" class="dateInput" id="createDate" name="date" value="" required="true" /></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="name">Зарплата</label></td>
-                                    <td><input type="number" id="createSalary" name="salary" value="" required="true" /></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="name">Отдел</label></td>
-                                    <td><input type="number" id="departmentId" name="departmentId" value="" required="true" /></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td><input type="reset" name="Reset" value="Reset">
-                                        <input type="submit" value="Add">
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="form-group">
+                            <label for="name">Имя</label>
+                            <input class="form-control" type="text" id="createName" name="fullName" value="" required="true" />
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Дата Рождения</label>
+                            <input type="date" class="form-control" id="createDate" name="date" value="2012-12-10" required="true" />
+                        </div>
+                        <div class="form-group">
+                            <label for="salary">Зарплата</label>
+                            <input class="form-control" type="number" id="createSalary" name="salary" value="" required="true" />
+                        </div>
+                        <div class="form-group">
+                            <label for="departmentId">Отдел</label>
+                            <input class="form-control" type="number" id="departmentId" name="departmentId" value="" required="true" />
+                        </div>
+                        <input class="btn btn-secondary" type="reset" name="Reset" value="Reset">
+                        <input class="btn btn-primary" type="submit" value="Add">
                     </form>
                 </div>
+                    <div class="updateForm" style="padding: 10px;float:left; width: 20%">
+                        <form id="updateEmployeeForm" action="<spring:url value='/employees/updateEmployee'/>" method="put">
+                            <input type="number" id="updateEmployeeId" name="employeeId" value="" required="true" hidden="true"/>
+                            <div class="form-group">
+                                <label for="fullName">Имя</label>
+                                <input class="form-control" type="text" id="updateFullName" name="fullName" value="" required="true" />
+                            </div>
+                            <div class="form-group">
+                                <label for="date">Дата Рождения</label>
+                                <input type="date" class="form-control" id="updateDate" name="date" value="2012-12-10" required="true" />   
+                            </div>
+                            <div class="form-group">
+                                <label for="salary">Зарплата</label>
+                                <input type="number" class="form-control" id="updateSalary" name="salary" value="" required="true" />
+                            </div>
+                            <div class="form-group">
+                                <label for="departmentId">Отдел</label>
+                                <input type="number" class="form-control" id="upDepartmentId" name="departmentId" value="" required="true" />
+                            </div>
+                            <input class="btn btn-secondary" type="reset" name="Reset" value="Reset">
+                            <input class="btn btn-primary" type="submit" value="Update">
+                        </form>
+                    </div>
+            </div>
 
-                <div class="updateForm" style="float:left">
-                    <form id="updateEmployeeForm" action="<spring:url value='/employees/updateEmployee'/>" method="put">
-                        <table>
-                            <tbody>
-                            <input type="number" id="updateEmployeeId" name="employeeId" value="" hidden="true"/>
-                            <tr>
-                                <td><label for="fullName">Имя</label></td>
-                                <td><input type="text" id="updateFullName" name="fullName" value="" required="true" /></td>
-                            </tr>
-                            <tr>
-                                <td><label for="date">Дата Рождения</label></td>
-                                <td><input type="date" class="dateInput" id="updateDate" name="date" value="" required="true" /></td>
-                            </tr>
-                            <tr>
-                                <td><label for="name">Зарплата</label></td>
-                                <td><input type="text" id="updateSalary" name="salary" value="" required="true" /></td>
-                            </tr>
-                            <tr>
-                                <td><label for="name">Отдел</label></td>
-                                <td><input type="number" id="upDepartmentId" name="departmentId" value="" required="true" /></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td><input type="reset" name="Reset" value="reset">
-                                    <input type="submit" value="update">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </form>
-                </div>
-            </div>
-            <div>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td><label for="from">От</label></td>
-                            <td><input type="date" id="from" class="dateInput" name="from" required="true"/></td>
-                        </tr>
-                        <tr>
-                            <td><label for="to">До</label></td>
-                            <td><input type="date" id="to" class="dateInput" name="to" required="true"/></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><input type="button" id="findBtn" name="findBtn" value="Найти" onclick="filterByDate()"/></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div>
-                <a class="btn btn-primary btn-large" href="<spring:url value='/departments/'/>">Отделы"</a>   
+            <div style="float: bottom; padding: 10px;">
+                
+                <div></div>
+                <a class="btn btn-primary btn-large" href="<spring:url value='/departments/'/>">Все Отделы</a>   
             </div>
         </div>
-
 
         <script type="text/javascript">
             $(fillInTable);
@@ -137,9 +110,7 @@
             <c:forEach var="employee" items="${employees}">
                 stringHtml += setStringHtml(${employee.employeeId}, '${employee.fullName}', '${employee.birthDate}', ${employee.salary}, ${employee.departmentId});
             </c:forEach>
-
                 $(document.getElementById("mainTable").getElementsByTagName("tbody")[0]).append(stringHtml);
-
             }
 
 
@@ -207,7 +178,7 @@
                 var birthDate = "\'" + birthDate + "\'";
 
 
-                tempStr += "<tr><td>" + employeeId;
+                tempStr += "<tr class=\"info\"><td>" + (employeeId + 1);
 
                 tempStr += "<td>" + strName;
 
@@ -218,10 +189,10 @@
                 tempStr += "<td>" + departmentId;
 
 
-                tempStr += "<td>" + "<input type=\"button\" value=\"update\" onClick=" + "\"fillInUpdateForm(" + employeeId + "," + strName + "," + birthDate + "," + salary + "," + departmentId + ")\"" + ">";
+                tempStr += "<td>" + "<input type=\"button\" class=\"btn btn-primary\" value=\"update\" onClick=" + "\"fillInUpdateForm(" + employeeId + "," + strName + "," + birthDate + "," + salary + "," + departmentId + ")\"" + ">";
                 tempStr += "<td>" + "<form action=\"<spring:url value='/employees/removeEmployee'/>\" method=\"delete\">" +
                         "<input type=\"text\" id=\"employeeId\" name=\"employeeId\" value=" + employeeId + " hidden=\"true\">" +
-                        "<input type=\"submit\" value=\"remove\" ></form>";
+                        "<input type=\"submit\" class=\"btn btn-danger\" value=\"remove\" ></form>";
 
                 return tempStr;
 

@@ -34,8 +34,6 @@ public class DepartmentDaoTest {
     @Autowired
     private DepartmentDao departmentDao;
 
-    private static Logger LOGGER = LogManager.getLogger(DepartmentDaoTest.class);
-
     @Test
     public void testAdd(){
         Department department1 = new Department(0, "INSERT_TEST", 100);
@@ -74,12 +72,12 @@ public class DepartmentDaoTest {
     public void testGetAll(){
         List<Department> list = departmentDao.getAll();
         assertEquals(list.size(), 4);
-        LOGGER.error("AVERAGE SALARY -> " + list.get(1).getAverageSalary());
     }
 
     @Test
     public void testGetById(){
-        assertEquals(departmentDao.getById(1).getDepartmentName(), "Department 2");
+        assertEquals(departmentDao.getById(1).getDepartmentName(),
+                "Department 2");
     }
 
 }

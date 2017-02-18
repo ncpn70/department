@@ -5,7 +5,7 @@ import by.task.model.Department;
 import java.util.List;
 
 /**
- * Created by simpson on 7.2.17.
+ * DAO
  */
 public interface DepartmentDao {
     /**

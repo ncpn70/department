@@ -1,6 +1,7 @@
 package by.task.service;
 
 import by.task.model.Employee;
+import by.task.service.exception.BadParamException;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,15 +26,38 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:/spring-service-test.xml"})
 @TransactionConfiguration(transactionManager="transactionManager", defaultRollback=true)
-@Ignore
 public class EmployeeServiceImplTest {
 
     @Autowired
     EmployeeService employeeService;
 
-  /*  @Test
+    @Test
     public void add() throws Exception {
-        Employee employee1 = new Employee(0, "EMPLOYEE TEST", LocalDate.now(), 100, 2);
+        Employee employee1 = new Employee(0, "EMPLOYEE TEST", new Date(2001, 1, 1), 100, 2);
+
+        Throwable ex = catchThrowable(() -> {
+            employeeService.add(null);
+        });
+
+        assertThat(ex).isInstanceOf(BadParamException.class);
+
+        Throwable e = catchThrowable(() -> {
+            employeeService.add(new Employee(0, null, new Date(2001, 1, 1), 100, 2));
+        });
+
+        assertThat(e).isInstanceOf(BadParamException.class);
+
+        Throwable e1 = catchThrowable(() -> {
+            employeeService.add(new Employee(0, "EMPLOYEE TEST", null, 100, 2));
+        });
+
+        assertThat(e1).isInstanceOf(BadParamException.class);
+
+        Throwable e3 = catchThrowable(() -> {
+            employeeService.add(new Employee(0, "EMPLOYEE TEST", null, 100, -3));
+        });
+
+        assertThat(e3).isInstanceOf(BadParamException.class);
 
         assertEquals(5, employeeService.add(employee1));
 
@@ -48,6 +73,36 @@ public class EmployeeServiceImplTest {
         employee1.setDepartmentId(5);
         employee1.setFullName("VIK");
 
+        Throwable ex4 = catchThrowable(() -> {
+            employeeService.update(new Employee(0, null, new Date(2001, 1, 1), 100, 2));
+        });
+
+        assertThat(ex4).isInstanceOf(BadParamException.class);
+
+        Throwable ex = catchThrowable(() -> {
+            employeeService.update(null);
+        });
+
+        assertThat(ex).isInstanceOf(BadParamException.class);
+
+        Throwable e = catchThrowable(() -> {
+            employeeService.update(new Employee(0, null, new Date(2001, 1, 1), 100, 2));
+        });
+
+        assertThat(e).isInstanceOf(BadParamException.class);
+
+        Throwable e1 = catchThrowable(() -> {
+            employeeService.update(new Employee(0, "EMPLOYEE TEST", null, 100, 2));
+        });
+
+        assertThat(e1).isInstanceOf(BadParamException.class);
+
+        Throwable e3 = catchThrowable(() -> {
+            employeeService.update(new Employee(0, "EMPLOYEE TEST", null, 100, -3));
+        });
+
+        assertThat(e3).isInstanceOf(BadParamException.class);
+
         employeeService.update(employee1);
         Employee employee2 = employeeService.getById(1);
 
@@ -60,6 +115,13 @@ public class EmployeeServiceImplTest {
         long id = 1;
 
         employeeService.remove(id);
+
+        Throwable ex2 = catchThrowable(() -> {
+            employeeService.remove(-5);
+        });
+
+        assertThat(ex2).isInstanceOf(BadParamException.class);
+
 
         Throwable ex = catchThrowable(() -> {
             employeeService.getById(id);
@@ -75,28 +137,27 @@ public class EmployeeServiceImplTest {
 
     @Test
     public void getById() throws Exception {
-        Employee employee = new Employee(2, "Employee 3", LocalDate.parse("1994-01-15"), 35010, 3);
+        Employee employee = new Employee(2, "Employee 3", new Date(94, 0, 15), 35010, 3);
+
+        Throwable ex = catchThrowable(() -> {
+            employeeService.getById(-6);
+        });
+
+        assertThat(ex).isInstanceOf(BadParamException.class);
+
         assertEquals(employeeService.getById(2), employee);
     }
 
     @Test
-    public void getByBirthDate() throws Exception {
-        LocalDate date = LocalDate.parse("1994-01-15");
-        Employee employee = new Employee(2, "Employee 3", date, 35010, 3);
-        assertEquals(employeeService.getById(2), employeeService.getByBirthDate(date).get(0));
-    }
-
-    @Test
-    public void getByBirthDateDiapason() throws Exception {
-        LocalDate dateFrom = LocalDate.parse("1994-01-01");
-        LocalDate dateTo = LocalDate.parse("1995-01-01");
-
-        assertEquals(employeeService.getByBirthDateDiapason(dateFrom, dateTo).size(), 4);
-    }
-
-    @Test
     public void getByDepartmentId() throws Exception {
+
+        Throwable ex = catchThrowable(() -> {
+            employeeService.getByDepartmentId(-6);
+        });
+
+        assertThat(ex).isInstanceOf(BadParamException.class);
+
         assertEquals(employeeService.getByDepartmentId(4).size(), 2);
-    }*/
+    }
 
 }

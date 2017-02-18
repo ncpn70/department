@@ -2,8 +2,12 @@ package by.task.service;
 
 import by.task.dao.EmployeeDao;
 import by.task.model.Employee;
+import by.task.service.exception.BadParamException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,14 +19,27 @@ import java.util.List;
 public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
-    EmployeeDao employeeDao;
+    private EmployeeDao employeeDao;
+
+    private static Logger LOGGER = LogManager.getLogger(DepartmentServiceImpl.class);
+    private static final String BAD_PARAMETER_MSG = "Bad parameters exception occurred. Wrong or null parameters were passed";
+
     /**
      * @param employee object to add. Id generates automatically
      * @return
      */
     @Override
     public long add(Employee employee) {
-        return employeeDao.add(employee);
+        try {
+            Assert.notNull(employee);
+            Assert.notNull(employee.getBirthDate());
+            Assert.notNull(employee.getFullName());
+            Assert.isTrue(employee.getDepartmentId() >= 0);
+            return employeeDao.add(employee);
+        }catch(IllegalArgumentException e){
+            LOGGER.error(BAD_PARAMETER_MSG + "\n" + employee);
+            throw new BadParamException(BAD_PARAMETER_MSG, employee);
+        }
     }
 
     /**
@@ -30,7 +47,18 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public void update(Employee employee) {
-        employeeDao.update(employee);
+        try {
+            Assert.notNull(employee);
+            Assert.isTrue(employee.getEmployeeId() >= 0);
+            Assert.notNull(employee.getBirthDate());
+            Assert.notNull(employee.getFullName());
+            Assert.isTrue(employee.getSalary() > 0);
+            Assert.isTrue(employee.getDepartmentId() >= 0);
+            employeeDao.update(employee);
+        }catch(IllegalArgumentException e){
+            LOGGER.error(BAD_PARAMETER_MSG + "\n" + employee);
+            throw new BadParamException(BAD_PARAMETER_MSG, employee);
+        }
     }
 
     /**
@@ -38,12 +66,24 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public void remove(long employeeId) {
-        employeeDao.remove(employeeId);
+        try {
+            Assert.isTrue(employeeId >= 0);
+            employeeDao.remove(employeeId);
+        } catch(IllegalArgumentException e){
+            LOGGER.error(BAD_PARAMETER_MSG + "\n" + employeeId);
+            throw new BadParamException(BAD_PARAMETER_MSG, employeeId);
+        }
     }
 
     @Override
     public void removeByDepartmentId(long departmentId) {
-        employeeDao.removeByDepartmentId(departmentId);
+        try {
+            Assert.isTrue(departmentId >= 0);
+            employeeDao.removeByDepartmentId(departmentId);
+        } catch(IllegalArgumentException e){
+            LOGGER.error(BAD_PARAMETER_MSG + "\n" + departmentId);
+            throw new BadParamException(BAD_PARAMETER_MSG, departmentId);
+        }
     }
 
     /**
@@ -60,35 +100,14 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public Employee getById(long employeeId) {
-        return employeeDao.getById(employeeId);
-    }
+        try {
+            Assert.isTrue(employeeId >= 0);
+            return employeeDao.getById(employeeId);
+        } catch(IllegalArgumentException e){
+            LOGGER.error(BAD_PARAMETER_MSG + "\n" + employeeId);
+            throw new BadParamException(BAD_PARAMETER_MSG, employeeId);
+        }
 
-    /**
-     * @param fullName name of needed employee
-     * @return list of employees by name
-     */
-    @Override
-    public List<Employee> getByFullName(String fullName) {
-        return employeeDao.getByFullName(fullName);
-    }
-
-    /**
-     * @param date birthDate of employee for selection
-     * @return list of employees by birthDate
-     */
-    @Override
-    public List<Employee> getByBirthDate(java.sql.Date date) {
-        return employeeDao.getByBirthDate(date);
-    }
-
-    /**
-     * @param from low border of diapason
-     * @param to   top border of diapason
-     * @return list of employees by birthDate diapason
-     */
-    @Override
-    public List<Employee> getByBirthDateDiapason(java.sql.Date from, java.sql.Date to) {
-        return employeeDao.getByBirthDateDiapason(from, to);
     }
 
     /**
@@ -97,6 +116,12 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public List<Employee> getByDepartmentId(long departmentId) {
+        try {
+            Assert.isTrue(departmentId >= 0);
         return employeeDao.getByDepartmentId(departmentId);
+        } catch(IllegalArgumentException e){
+            LOGGER.error(BAD_PARAMETER_MSG + "\n" + departmentId);
+            throw new BadParamException(BAD_PARAMETER_MSG, departmentId);
+        }
     }
 }

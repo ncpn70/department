@@ -26,12 +26,12 @@
     <body>
         <div>
                <div>
-                    <div style="width:50%;float:left">
+                    <div style="padding: 10px;width:50%;float:left">
                         <table class="table" id="mainTable" summary="list of Departments.">
-                                <tr>
+                                <tr class="active">
                                     <td><h2>№</h2></td>
                                     <td><h2>Название</h2></td>
-                                    <td><h2>Средняя масса</h2></td>
+                                    <td><h2>Средняя зп</h2></td>
                                     <td><h2>Обновить</h2></td>
                                     <td><h2>Удалить</h2></td>
                                 </tr>
@@ -40,49 +40,28 @@
 	                            </tbody>
                         </table>
                     </div>
-                    <div style="with: 50%; float:left">
-                        <form action="<spring:url value='/departments/addDepartment'/>" method="post">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td><label for="name">Имя</label></td>
-                                <td><input type="text" id="createName" name="name" value="" required="true" /></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td><input type="reset" name="Reset" value="Reset">
-                                	<input type="submit" value="Add">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </form>
-                    </div>
-                    
-          <div class="updateForm">
-                <form id="updateDepartmentForm" action="<spring:url value='/departments/updateDepartment'/>" method="put">
-                    <table>
-                        <tbody>
-                            <input type="text" id="updateDepartmentId" name="departmentId" value="" hidden="true"/>
-                            <tr>
-                                <td><label for="name">Имя</td>
-                                <td><input type="text" id="updateDepartmentName" name="departmentName" value="" required="true" /></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td><input type="reset" name="Reset" value="reset">
-                                	<input type="submit" value="update">
-                              	</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </form>
-            </div>
-                </div>
-     </div>
+                   <div style="padding: 10px; with: 50%; float:bottom">
+                       <form class="form-inline" action="<spring:url value='/departments/addDepartment'/>" method="post">
+
+                           <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="createName" name="name" placeholder="Department name" value="" required="true" />
+                           <input class="btn btn-secondary" type="reset" name="Reset" value="Reset">
+                           <input class="btn btn-primary" type="submit" value="Add">
+                       </form>
+                   </div>
+                       <p></p>
+
+                   <div style="padding: 10px; with: 50%; float:bottom" class="updateForm">
+                       <form class="form-inline" id="updateDepartmentForm" action="<spring:url value='/departments/updateDepartment'/>" method="put">
+                           <input type="text" id="updateDepartmentId" name="departmentId" value="" required="true" hidden="true"/>
+                           <input type="text"  class="form-control mb-2 mr-sm-2 mb-sm-0" id="updateDepartmentName" placeholder="Department name" name="departmentName" value="" required="true" /></td>
+                           <input class="btn btn-secondary" type="reset" name="Reset" value="Reset">
+                           <input class="btn btn-primary" type="submit" value="update">
+                       </form>
+                   </div>
+               </div>
+        </div>
             <script type="text/javascript">
             $(fillInTable);
-            
             
             function fillInTable(){
                 var stringHtml = "";
@@ -107,19 +86,19 @@
                 var strName = "\'" + name + "\'";
                 
                 
-                tempStr += "<tr><td>" + "<form action=\"<spring:url value='/employees/employeesOfDepartment/'/>\">" +
+                tempStr += "<tr  class=\"info\" ><td>" + "<form action=\"<spring:url value='/employees/employeesOfDepartment/'/>\">" +
                 "<input type=\"text\" id=\"departmentId\" name=\"departmentId\" value=" + departmentId + " hidden=\"true\">" + 
-                "<input type=\"submit\" value=" + departmentId + " ></form>";
+                "<input type=\"submit\" class=\"btn btn-link\" value=" + departmentId + " ></form>";
                 
                 tempStr += "<td>"  + name;
                 
                 tempStr += "<td>" + averageSalary;
 
 
-                 tempStr += "<td>" + "<input type=\"button\" value=\"update\" onClick=" + "\"fillInUpdateForm(" + departmentId + "," + strName + ")\"" + ">";
+                 tempStr += "<td>" + "<input type=\"button\" class=\"btn btn-primary\" value=\"update\" onClick=" + "\"fillInUpdateForm(" + departmentId + "," + strName + ")\"" + ">";
              tempStr += "<td>" + "<form action=\"<spring:url value='/departments/removeDepartment'/>\" method=\"delete\">" +
                                                                  "<input type=\"text\" id=\"departmentId\" name=\"departmentId\" value=" + departmentId + " hidden=\"true\">" +
-                                                                 "<input type=\"submit\" value=\"remove\" ></form>";
+                                                                 "<input type=\"submit\" class=\"btn btn-danger\" value=\"remove\" ></form>";
                                                                  
                 return tempStr;
                 
@@ -128,26 +107,3 @@
             </script>
     </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,5 +1,6 @@
 package by.task.dao;
 
+import by.task.model.Department;
 import by.task.model.Employee;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,7 +23,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Created by simpson on 7.2.17.
+ * Implementation that gives access to HSQLDB
  */
 @Repository
 public class EmployeeDaoImpl implements EmployeeDao {
@@ -135,7 +136,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     @Override
     public void removeByDepartmentId(long departmentId) {
-        LOGGER.debug("REMOVE ->" + departmentId);
+        LOGGER.debug("REMOVE BY DEPARTMENT ->" + departmentId);
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue(DEPARTMENT_ID, departmentId);
@@ -149,7 +150,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
      */
     @Override
     public List<Employee> getAll() {
-        return namedParameterJdbcTemplate.query(selectAllEmployeesSql, new EmployeeMapper());
+        return namedParameterJdbcTemplate.query(selectAllEmployeesSql, this::mapEmployee);
     }
 
     /**
@@ -159,60 +160,12 @@ public class EmployeeDaoImpl implements EmployeeDao {
      */
     @Override
     public Employee getById(long employeeId) {
-        LOGGER.debug("SELECT BY -> " + employeeId);
+        LOGGER.debug("SELECT BY ID -> " + employeeId);
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue(EMPLOYEE_ID, employeeId);
 
-        return namedParameterJdbcTemplate.queryForObject(selectEmployeeByIdSql, sqlParameterSource, new EmployeeMapper());
-    }
-
-    /**
-     *
-     * @param fullName name of needed employee
-     * @return list of employees by name
-     */
-    @Override
-    public List<Employee> getByFullName(String fullName) {
-
-        LOGGER.debug("SELECT BY -> " + fullName);
-
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue(FULL_NAME, fullName);
-
-        return namedParameterJdbcTemplate.query(selectEmployeeByFullNameSql, sqlParameterSource, new EmployeeMapper());
-    }
-
-    /**
-     *
-     * @param date birthDate of employee for selection
-     * @return list of employees by birthDate
-     */
-    @Override
-    public List<Employee> getByBirthDate(Date date) {
-        LOGGER.debug("SELECT BY -> " + date);
-
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue(BIRTH_DATE, date);
-
-        return namedParameterJdbcTemplate.query(selectEmployeeByBirthDateSql, sqlParameterSource, new EmployeeMapper());
-    }
-
-    /**
-     *
-     * @param from low border of diapason
-     * @param to top border of diapason
-     * @return list of employees by birthDate diapason
-     */
-    @Override
-    public List<Employee> getByBirthDateDiapason(Date from, Date to) {
-        LOGGER.debug("SELECT BY -> " + from + " - " + to);
-
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue(BIRTH_DATE + 1, from)
-                .addValue(BIRTH_DATE + 2, to);
-
-        return  namedParameterJdbcTemplate.query(selectEmployeeByBirthDateDiapasonSql, sqlParameterSource, new EmployeeMapper());
+        return namedParameterJdbcTemplate.queryForObject(selectEmployeeByIdSql, sqlParameterSource, this::mapEmployee);
     }
 
     /**
@@ -222,27 +175,21 @@ public class EmployeeDaoImpl implements EmployeeDao {
      */
     @Override
     public List<Employee> getByDepartmentId(long departmentId) {
-        LOGGER.debug("SELECT BY -> " + departmentId);
+        LOGGER.debug("SELECT BY DEPARTMENT -> " + departmentId);
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue(DEPARTMENT_ID, departmentId);
 
 
-        return namedParameterJdbcTemplate.query(selectEmployeeByDepartmentIdSql, sqlParameterSource, new EmployeeMapper());
+        return namedParameterJdbcTemplate.query(selectEmployeeByDepartmentIdSql, sqlParameterSource,
+                this::mapEmployee);
     }
 
-    public class EmployeeMapper implements RowMapper<Employee> {
-        @Override
-        public Employee mapRow(ResultSet rs, int i) throws SQLException {
-            Employee employee = new Employee();
+    private Employee mapEmployee(ResultSet rs, int i) throws SQLException{
+        return new Employee(rs.getLong("employeeId"),
+                rs.getString("fullName"), rs.getDate("birthDate"),
+                rs.getLong("salary"), rs.getLong("departmentId"));
 
-            employee.setEmployeeId(rs.getInt("employeeId"));
-            employee.setFullName(rs.getString("fullName"));
-            employee.setBirthDate(rs.getDate("birthDate"));
-            employee.setSalary(rs.getLong("salary"));
-            employee.setDepartmentId(rs.getLong("departmentId"));
-
-            return employee;
-        }
     }
+
 }

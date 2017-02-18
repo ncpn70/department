@@ -184,43 +184,4 @@ public class EmployeeRestControllerMockTest {
         verify(employeeService);
     }
 
-    @Test
-    public void testGetByDate0() throws Exception {
-        List<Employee> list = new ArrayList<>();
-        list.add(new Employee(1L, "EMPLOYEE TEST", new Date(1993, 10, 10), 100L, 2L));
-
-
-        expect(employeeService.getByBirthDate(new Date(1993, 10, 10))).andReturn(list);
-        replay(employeeService);
-
-        mockMvc.perform(get(EMPLOEYY_REST_ROOT + "/employeeByDate/" + new Date(1993, 10, 10))
-                .accept(MediaType.APPLICATION_JSON)
-        )
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content()
-                        .string("[{\"employeeId\":1,\"fullName\":\"EMPLOYEE TEST\",\"birthDate\":\"3893-11-10\",\"salary\":100,\"departmentId\":2}]"));
-
-        verify(employeeService);
-    }
-
-    @Test
-    public void testGetStarByDate2() throws Exception {
-        List<Employee> stars = new ArrayList<Employee>();
-        stars.add(new Employee(0L, "EMPLOYEE TEST", new Date(1993, 10, 10), 100L, 2L));
-        Date topBorder = new Date(2014 - 1900, 6, 5);
-
-        expect(employeeService.getByBirthDateDiapason(new Date(1993, 10, 10), topBorder)).andReturn(stars);
-        replay(employeeService);
-
-        mockMvc.perform(get(EMPLOEYY_REST_ROOT + "/getByDateDiapason/" + new Date(1993, 10, 10) + "_" + topBorder)
-                .accept(MediaType.APPLICATION_JSON)
-        )
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content()
-                        .string("[{\"employeeId\":0,\"fullName\":\"EMPLOYEE TEST\",\"birthDate\":\"3893-11-10\",\"salary\":100,\"departmentId\":2}]"));
-
-        verify(employeeService);
-    }
 }

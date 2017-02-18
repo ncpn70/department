@@ -1,11 +1,16 @@
 package by.task.service;
 
 import by.task.dao.DepartmentDao;
+import by.task.dao.DepartmentDaoImpl;
 import by.task.dao.EmployeeDao;
 import by.task.model.Department;
+import by.task.service.exception.BadParamException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -15,28 +20,48 @@ import java.util.List;
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
 
-    @Autowired
-    DepartmentDao departmentDao;
+    private static Logger LOGGER = LogManager.getLogger(DepartmentServiceImpl.class);
+    private static final String BAD_PARAMETER_MSG = "Bad parameters exception occurred. Wrong or null parameters were passed";
 
     @Autowired
-    EmployeeDao employeeDao;
+    private DepartmentDao departmentDao;
+
+    @Autowired
+    private EmployeeDao employeeDao;
     /**
      * @param department Department object that need to create ne department. id generates automatically.
      * @return id of new object
      */
     @Override
     public long add(Department department) {
-        return departmentDao.add(department);
+
+        LOGGER.error("starts with " + department);
+
+        try {
+            Assert.notNull(department);
+            Assert.notNull(department.getDepartmentName());
+            return departmentDao.add(department);
+        } catch(IllegalArgumentException e){
+            LOGGER.error(BAD_PARAMETER_MSG + "\n" + department);
+            throw new BadParamException(BAD_PARAMETER_MSG, department);
+        }
     }
 
     /**
-     * * @param department object that stores necessaries data for updating.
      *
-     * @param department
+     * @param department object that stores necessaries data for updating.
      */
     @Override
     public void update(Department department) {
-        departmentDao.update(department);
+        try {
+            Assert.notNull(department);
+            Assert.isTrue(department.getDepartmentId() >= 0);
+            Assert.notNull(department.getDepartmentName());
+            departmentDao.update(department);
+        } catch (IllegalArgumentException e){
+            LOGGER.error(BAD_PARAMETER_MSG + "\n" + department);
+            throw new BadParamException(BAD_PARAMETER_MSG, department);
+        }
     }
 
     /**
@@ -45,8 +70,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     @Transactional
     public void remove(long departmentId) {
-        employeeDao.removeByDepartmentId(departmentId);
-        departmentDao.remove(departmentId);
+        try {
+            Assert.isTrue(departmentId >= 0);
+            employeeDao.removeByDepartmentId(departmentId);
+            departmentDao.remove(departmentId);
+        } catch(IllegalArgumentException e){
+            LOGGER.error(BAD_PARAMETER_MSG + "\n" + departmentId);
+            throw new BadParamException(BAD_PARAMETER_MSG, departmentId);
+        }
     }
 
     /**
@@ -63,6 +94,12 @@ public class DepartmentServiceImpl implements DepartmentService {
      */
     @Override
     public Department getById(long departmentId) {
-        return departmentDao.getById(departmentId);
+        try{
+            Assert.isTrue(departmentId >= 0);
+            return departmentDao.getById(departmentId);
+        } catch(IllegalArgumentException e){
+            LOGGER.error(BAD_PARAMETER_MSG + "\n" + departmentId);
+            throw new BadParamException(BAD_PARAMETER_MSG, departmentId);
+        }
     }
 }
