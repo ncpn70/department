@@ -29,7 +29,7 @@ to get sources with git:
 or
 * [download project in archive](https://codeload.github.com/ncpn70/department/zip/master)
 
-Than you should [download](https://sourceforge.net/projects/hsqldb/files/hsqldb/hsqldb_2_3/hsqldb-2.3.4.zip/download) hsqldb.jar. We need it to create DB.
+Than you should [download](http://central.maven.org/maven2/org/hsqldb/hsqldb/2.3.4/hsqldb-2.3.4.jar) hsqldb.jar. We need it to create DB.
 
 ###Starting db and building project.
 * First of all we must start DB, for what you should execute in terminal:(if necessary change the path to jar)
