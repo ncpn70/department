@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by simpson on 13.2.17.
+ * Web controller that handles requests from departmentPage.jsp
  */
 @Controller
 @RequestMapping("/departments")

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by simpson on 12.2.17.
+ * Class Controller that handle REST requests are associated with Department entity
  */
 @RestController
 @RequestMapping("/restDepartment")

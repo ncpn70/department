@@ -13,7 +13,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Created by simpson on 12.2.17.
+ * Class of Service layer that serve employee entity, and should
+ * consist business logic
  */
 @Service
 public class EmployeeServiceImpl implements EmployeeService {

@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 /**
- * POJO
+ * POJO class
  */
 public class Employee {
     private long employeeId;

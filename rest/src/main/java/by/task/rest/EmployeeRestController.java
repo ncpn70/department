@@ -18,7 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Created by simpson on 12.2.17.
+ * Class Controller that handle REST requests are associated with employee entity
  */
 @RestController
 @RequestMapping("/restEmployee")

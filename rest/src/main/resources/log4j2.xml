@@ -6,7 +6,7 @@
             <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level Class: %c{1}, Method: %M, Line: %L - %msg%n"/>
         </File>
         <Console name="Console" target="SYSTEM_OUT">
-            <ThresholdFilter level="warn"/>
+            <ThresholdFilter level="debug"/>
             <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level Class: %c{1}, Method: %M, Line: %L - %msg%n"/>
         </Console>
     </Appenders>

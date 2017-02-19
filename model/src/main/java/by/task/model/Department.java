@@ -1,7 +1,7 @@
 package by.task.model;
 
 /**
- * POJO
+ * POJO class
  */
 public class Department {
     private long departmentId;

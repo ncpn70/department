@@ -21,7 +21,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- *  Gives acces to DB
+ *  Allow to perform CRUD operations regarding Department entity
  */
 @Repository
 public class DepartmentDaoImpl implements DepartmentDao {
@@ -132,6 +132,9 @@ public class DepartmentDaoImpl implements DepartmentDao {
         return namedParameterJdbcTemplate.queryForObject(selectDepartmentByIdSql, sqlParameterSource, new DepartmentMapper());
     }
 
+    /**
+     *  Map db fields on Department entity
+     */
     public class DepartmentMapper implements RowMapper<Department> {
         @Override
         public Department mapRow(ResultSet rs, int i) throws SQLException {

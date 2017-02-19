@@ -17,7 +17,7 @@ import java.sql.Date;
 import java.util.List;
 
 /**
- * Created by simpson on 14.2.17.
+ * Web controller that handles requests from employeePage.jsp
  */
 @Controller
 @RequestMapping("/employees")
@@ -28,7 +28,6 @@ public class EmployeeWebController {
 
     @Resource
     private RestTemplate restTemplate;
-
 
     @RequestMapping("/")
     public ModelAndView employeePage(){

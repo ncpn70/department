@@ -23,7 +23,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Implementation that gives access to HSQLDB
+ * Allow to perform CRUD operations regarding Department entity
  */
 @Repository
 public class EmployeeDaoImpl implements EmployeeDao {
@@ -185,11 +185,13 @@ public class EmployeeDaoImpl implements EmployeeDao {
                 this::mapEmployee);
     }
 
+    /**
+     *      lambdas except RowMapper that is used in DepartmentDaoImpl
+     */
     private Employee mapEmployee(ResultSet rs, int i) throws SQLException{
         return new Employee(rs.getLong("employeeId"),
                 rs.getString("fullName"), rs.getDate("birthDate"),
                 rs.getLong("salary"), rs.getLong("departmentId"));
-
     }
 
 }

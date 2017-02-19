@@ -15,7 +15,8 @@ import org.springframework.util.Assert;
 import java.util.List;
 
 /**
- * Created by simpson on 12.2.17.
+ * Class of Service layer that serve department entity, and should
+ * consist business logic/
  */
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
